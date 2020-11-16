@@ -2,9 +2,6 @@
 
 import javax.swing.*;
 import javax.swing.border.*;
-
-import a3.BarPlot;
-
 import java.awt.*;
 import java.awt.event.*;
 
