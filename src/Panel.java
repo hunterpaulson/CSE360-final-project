@@ -12,8 +12,8 @@ import java.util.Observer;
  * <p>
  * This is the main Panel under the JMenu that displays the JTable of all the data
  */
-public class Panel extends JPanel implements Observer {
-    
-	
-
-}
+//public class Panel extends JPanel implements Observer {
+//    
+//	
+//
+//}

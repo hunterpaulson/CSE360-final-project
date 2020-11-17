@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Student {
 	
@@ -18,27 +19,27 @@ public class Student {
 		this.program = program;
 		this.level = level;
 		this.ASURITE = ASURITE;
-		this.attendance = new HashMap();
+		this.attendance = new LinkedHashMap();
 	}
 	
 	public void addAttendance(LocalDate date, int time) {
 		attendance.put(date, attendance.getOrDefault(date, 0) + time);
 	}
 	
-	public int getAttendance(LocalDate date) {
+	public int getDateAttendance(LocalDate date) {
 		return attendance.get(date);
 	}
 	
 	
 	public HashMap<LocalDate, Integer> getAttendance() {
-		return new HashMap(attendance);
+		return new LinkedHashMap(attendance);
 	}
 	
 	public String getID() {
 		return this.ID;
 	}
 	
-	public void setID(int ID) {
+	public void setID(String ID) {
 		this.ID = ID;
 	}
 	

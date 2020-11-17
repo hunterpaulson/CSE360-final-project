@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Observable;
 import java.time.LocalDate; // import the LocalDate class
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 
@@ -13,7 +14,6 @@ public class Repository extends Observable  {
 	
 	public static List<Student> roster;
 	public static List<String> headers;
-	private static int numTimesLoaded = 0;
 	
 	public static final String delimiter = ",";
 	
@@ -34,12 +34,16 @@ public class Repository extends Observable  {
 	        String line = "";
 	        String[] studentAttributes;
 	        
-	        if(numTimesLoaded != 0) {	        	
-	        	line = br.readLine();
-	        	studentAttributes = line.split(delimiter);
+	        line = br.readLine();
+        	studentAttributes = line.split(delimiter);
+        		
+	        if(studentAttributes[0].equals("ID")) {	        	
 	        	for(int i = headers.size(); i < studentAttributes.length; i++) {
 	        		headers.add(studentAttributes[i]);
 	        	}
+	        }
+	        else {
+	            studentList.add(createStudent(studentAttributes));
 	        }
 	        
 	        while((line = br.readLine()) != null) {
@@ -53,41 +57,48 @@ public class Repository extends Observable  {
             ioe.printStackTrace();
          }
 		 
-		 this.roster = studentList;
-		 numTimesLoaded++;
+		 roster = studentList;
 	}
 	   public void load() {
 
-		 final JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-		 int returnVal = fc.showOpenDialog(null);
+//		 final JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+//		 int returnVal = fc.showOpenDialog(null);
 		 
 		 List<Student> students;
-		 
-		 if(returnVal == JFileChooser.APPROVE_OPTION) {
-			 File csvInputFile = fc.getSelectedFile();
+//		 
+//		 if(returnVal == JFileChooser.APPROVE_OPTION) {
+//			 File csvInputFile = fc.getSelectedFile();
 			 Repository repo = new Repository();
-			 repo.read(csvInputFile.toString());
-			 students = repo.roster;
+			 repo.read("C:\\Users\\User\\Desktop\\studentTest.csv");
+//			 repo.read(csvInputFile.toString());
+			 students = roster;
 
 			 setChanged();
 			 notifyObservers();
-		 }
-		
+//		 }
+//		
 	   }
 	   
+	   /*
+	    * createStudent takes in an array of strings, 
+	    * each entry corresponding to an attribute of
+	    * the student read in a line of the input csv.
+	    * The method will use these attributes to 
+	    * construct a Student object and return it as stu.
+	    * 
+	    * @param attributes String[]
+	    * @return Student
+	    * 
+	    */
 	   public Student createStudent(String[] attributes) {
-		   String ID = attributes[0];
+		   String ID = attributes[0];			
 		   String firstName = attributes[1];
 		   String lastName = attributes[2];
 		   String program = attributes[3];
 		   String level = attributes[4];
 		   String ASURITE = attributes[5];
 		   
-		   
-		   LocalDate currDate = LocalDate.now();
-		   
 		   Student stu = new Student(ID, firstName, lastName, program, level, ASURITE);
-		   stu.addAttendance(currDate, 10);
 		   for(int i = 6; i < attributes.length; i++) {
 			   stu.addAttendance(LocalDate.parse(headers.get(i)), Integer.parseInt(attributes[i]));
 		   }
@@ -95,7 +106,40 @@ public class Repository extends Observable  {
 		   return stu;
 	   }
 	   
-	   public void save() {
+	   public void save(String saveFilePath) {
+		   
+		   //Save Dialog Code to be used somewhere else and resulting filepath to be passed into this function
+		   JFrame parentFrame = new JFrame();
+		   
+		   JFileChooser fileChooser = new JFileChooser();
+		   fileChooser.setDialogTitle("Save Roster");   
+		    
+		   int userSelection = fileChooser.showSaveDialog(parentFrame);
+		   File fileToSave = null;
+		   if (userSelection == JFileChooser.APPROVE_OPTION) {
+		       fileToSave = fileChooser.getSelectedFile();
+		       System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+		   }
+		   
+		   try {
+			FileWriter csvWriter = new FileWriter(fileToSave.getAbsolutePath().toString());
+			
+			if(!headers.isEmpty())
+				csvWriter.append(String.join(",", headers));
+			
+			List<List<String>> tableData = getTableData();
+			
+			for(List<String> studentInfo : tableData) {
+				csvWriter.append("\n");
+				csvWriter.append(String.join(",", studentInfo));
+			}
+			
+			csvWriter.flush();
+			csvWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		   
 		   
 	   }
 	   
