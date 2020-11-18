@@ -20,6 +20,12 @@ public class Repository extends Observable  {
 	
 	public Repository() {
 		headers = new ArrayList();
+		headers.add("ID");
+		headers.add("First Name");
+		headers.add("Last Name");
+		headers.add("Program");
+		headers.add("Level");
+		headers.add("ASURITE");
 	}
 	
 	
@@ -136,7 +142,17 @@ public class Repository extends Observable  {
 		   
 	   }
 	   
-	   
+       public String[] getHeaders() {
+    	   
+           String[] headersArr = new String[headers.size()];
+           int i = 0;
+           for(String s : headers) {
+               headersArr[i] = s;
+               i++;
+           }
+           return headersArr;
+       }
+       
 	   public String[][] getTableData() {
 		   
 		   String[][] tableData = new String[roster.size()][];

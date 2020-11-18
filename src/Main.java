@@ -60,9 +60,9 @@ public class Main extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-//            	String inputFilepath = Controller.getFilePath();
-//            	Controller.loadTable(inputFilepath);
-            	Controller.loadTable("C:\\Users\\hwp11\\OneDrive\\Documents\\Classes\\CSE360\\studentTest.csv");
+            	String inputFilepath = Controller.getFilePath();
+            	Controller.loadTable(inputFilepath);
+//            	Controller.loadTable("C:\\Users\\hwp11\\OneDrive\\Documents\\Classes\\CSE360\\studentTest.csv");
                 
                 // The controller validates the given input, and
                 // eventually calls some methods on the Model,

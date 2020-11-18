@@ -38,11 +38,12 @@ public class Panel extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
     	System.out.println("Was Notified");
     	String[][] data = ((Repository)o).getTableData();
+    	String[] headers = ((Repository)o).getHeaders();
     	for(String[] arr : data) {
     		System.out.println(Arrays.toString(arr));
     	}
     	System.out.println(Arrays.toString(Repository.headers.toArray()));
-    	this.table.setModel(new DefaultTableModel(data, Repository.headers.toArray()));
+    	this.table.setModel(new DefaultTableModel(data, headers));
     	System.out.println("Set Model");
     }
 }
