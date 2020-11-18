@@ -16,9 +16,9 @@ class StudentTest {
 	   repo.load();
 	   
 	   
-	   System.out.println(repo.headers.toString());
+	   System.out.println(Repository.headers.toString());
 
-		 for(Student stu : repo.roster) {
+		 for(Student stu : Repository.roster) {
 			System.out.println("ID: " + stu.getID() + 
 							   " First Name: " + stu.getFirstName() + 
 							   " Last Name: " + stu.getLastName() + 

@@ -1,6 +1,9 @@
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
 /**
  * Controller Class
@@ -9,15 +12,20 @@ import java.awt.event.*;
  * <p>
  * The controller manages user interaction and passes these interactions to the view (main/panel) and the model(repository)
  */
-public class Controller implements ActionListener {
+public class Controller {
 
-	/**
-	 * 
-	 */
-    public void actionPerformed(ActionEvent e) {
-    	//TODO: get the type of event (which menu button was clicked) and act accordingly
-    	// looks something like this...
-    	// if (e.getSource() == <button from main>) {
-
-    }
+	public static String getFilePath() {
+		File csvInputFile = null;
+		final JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		int returnVal = fc.showOpenDialog(null);
+		 
+		if(returnVal == JFileChooser.APPROVE_OPTION) {
+			csvInputFile = fc.getSelectedFile();
+		}
+		return csvInputFile.toString();
+	}
+	
+	public static void loadTable(String filepath) {
+        Main.repo.load(filepath);
+	}
 }

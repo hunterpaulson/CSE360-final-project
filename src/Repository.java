@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,37 +60,29 @@ public class Repository extends Observable  {
 		 
 		 roster = studentList;
 	}
-	   public void load() {
-
-//		 final JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-//		 int returnVal = fc.showOpenDialog(null);
-		 
-		 List<Student> students;
-//		 
-//		 if(returnVal == JFileChooser.APPROVE_OPTION) {
-//			 File csvInputFile = fc.getSelectedFile();
-			 Repository repo = new Repository();
-			 repo.read("C:\\Users\\User\\Desktop\\studentTest.csv");
-//			 repo.read(csvInputFile.toString());
-			 students = roster;
-
-			 setChanged();
-			 notifyObservers();
-//		 }
-//		
-	   }
+	
+	
+	public void load(String csvInputFile) {
+		
+		System.out.println(Arrays.toString(Repository.headers.toArray()));
+		this.read(csvInputFile);
+		System.out.println("Read File");
+		setChanged();
+		notifyObservers();
+		System.out.println("Tried to Notify");
+	}
 	   
-	   /*
-	    * createStudent takes in an array of strings, 
-	    * each entry corresponding to an attribute of
-	    * the student read in a line of the input csv.
-	    * The method will use these attributes to 
-	    * construct a Student object and return it as stu.
-	    * 
-	    * @param attributes String[]
-	    * @return Student
-	    * 
-	    */
+	/*
+	* createStudent takes in an array of strings, 
+	* each entry corresponding to an attribute of
+	* the student read in a line of the input csv.
+	* The method will use these attributes to 
+	* construct a Student object and return it as stu.
+	* 
+	* @param attributes String[]
+	* @return Student
+	* 
+	*/
 	   public Student createStudent(String[] attributes) {
 		   String ID = attributes[0];			
 		   String firstName = attributes[1];
@@ -144,24 +137,26 @@ public class Repository extends Observable  {
 	   }
 	   
 	   
-	   public List<List<String>> getTableData() {
+	   public String[][] getTableData() {
 		   
-		   List<List<String>> tableData = new ArrayList(roster.size());
+		   String[][] tableData = new String[roster.size()][];
 		    
 		   for(int i = 0; i < roster.size(); i++) {
-			   List<String> stuAttributes = new ArrayList();
-			   stuAttributes.add(roster.get(i).getID());
-			   stuAttributes.add(roster.get(i).getFirstName());
-			   stuAttributes.add(roster.get(i).getLastName());
-			   stuAttributes.add(roster.get(i).getProgram());
-			   stuAttributes.add(roster.get(i).getLevel());
-			   stuAttributes.add(roster.get(i).getASURITE());
+			   String[] stuAttributes = new String[headers.size()];
+			   stuAttributes[0] = roster.get(i).getID();
+			   stuAttributes[1] = roster.get(i).getFirstName();
+			   stuAttributes[2] = roster.get(i).getLastName();
+			   stuAttributes[3] = roster.get(i).getProgram();
+			   stuAttributes[4] = roster.get(i).getLevel();
+			   stuAttributes[5] = roster.get(i).getASURITE();
 			   
+			   int j = 6;
 			   for(Map.Entry<LocalDate, Integer> e : roster.get(i).getAttendance().entrySet()) {
-				   stuAttributes.add(Integer.toString(e.getValue()));
+				   stuAttributes[j] = Integer.toString(e.getValue());
+				   j++;
 			   }
 			   
-			   tableData.add(stuAttributes);
+			   tableData[i] = stuAttributes;
 		   }
 		   
 		   return tableData;
