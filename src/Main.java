@@ -1,10 +1,7 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
-
-/**
- * 
- */
 
 /**
  * Main Class
@@ -13,8 +10,10 @@ import java.awt.event.*;
  * <p>
  * 
  */
+@SuppressWarnings("serial")  // remove this before we submit, its just annoying
 public class Main extends JFrame {
-	
+		
+	protected static Repository repo;
 	/**
 	 * 
 	 */
@@ -47,12 +46,30 @@ public class Main extends JFrame {
         setJMenuBar(menuBar);
         
         
-        // Table
-        // Use JTable here
-        // in theJTable we need a JScrollPane with horizontal and vertical scroll bars
+        
+        Panel panel = new Panel();
+        add(panel);
         
         
-
+        repo = new Repository();
+        repo.addObserver(panel);
+        
+        // Action listeners
+        loadRoster.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+            	String inputFilepath = Controller.getFilePath();
+            	Controller.loadTable(inputFilepath);
+//            	Controller.loadTable("C:\\Users\\hwp11\\OneDrive\\Documents\\Classes\\CSE360\\studentTest.csv");
+                
+                // The controller validates the given input, and
+                // eventually calls some methods on the Model,
+                // possibly using the given input values
+//                controller.process(s, i, d);
+            }
+        });
 	}
 
 	/**
