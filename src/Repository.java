@@ -105,7 +105,7 @@ public class Repository extends Observable  {
 		   return stu;
 	   }
 	   
-	   public void save(String saveFilePath) {
+	   public boolean save(String saveFilePath) {
 		   
 		   //Save Dialog Code to be used somewhere else and resulting filepath to be passed into this function
 		   JFrame parentFrame = new JFrame();
@@ -126,7 +126,15 @@ public class Repository extends Observable  {
 			if(!headers.isEmpty())
 				csvWriter.append(String.join(",", headers));
 			
-			List<List<String>> tableData = getTableData();
+			List<List<String>> tableData = null;
+			
+			String[][] arrTableData = getTableData();
+			
+			for(int i = 0; i < arrTableData.length; i++) {
+				List<String> tableRow = Arrays.asList(arrTableData[i]);
+				tableData.add(tableRow);
+			}
+			
 			
 			for(List<String> studentInfo : tableData) {
 				csvWriter.append("\n");
@@ -137,7 +145,10 @@ public class Repository extends Observable  {
 			csvWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
+		   
+		   return true;
 		   
 		   
 	   }
