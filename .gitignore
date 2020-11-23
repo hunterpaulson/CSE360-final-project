@@ -12,6 +12,8 @@
 .mtj.tmp/
 
 # Package Files #
+*.classpath
+*.project
 *.war
 *.nar
 *.ear

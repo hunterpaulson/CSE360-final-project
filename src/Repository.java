@@ -2,10 +2,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Set;
 import java.time.LocalDate; // import the LocalDate class
 
 import javax.swing.JButton;
@@ -28,6 +31,7 @@ public class Repository extends Observable  {
 	public static List<String> headers;
 	public static int studentsAdded = 0;
 	public static LinkedHashMap<String, Integer> additionalStudents;
+	public static List<LocalDate> dates;
 	
 	public static final String delimiter = ",";
 	
@@ -40,6 +44,8 @@ public class Repository extends Observable  {
 		headers.add("Level");
 		headers.add("ASURITE");
 		additionalStudents = new LinkedHashMap();
+		dates = new ArrayList<LocalDate>();
+
 	}
 	
 	
@@ -225,15 +231,20 @@ public class Repository extends Observable  {
 		        		
 		        		if(student.getASURITE().equals(ASURITE)) {
 		        			student.addAttendance(date, time);
-		        			System.out.println(student.getASURITE() + ": " + student.getAttendance());
+		        			//System.out.println(student.getASURITE() + ": " + student.getAttendance());
 		        			additionalStudents.remove(ASURITE);
 		        			studentsAdded++;
-		        			break;
+		        			
+		        			if(!this.hasDate(date)) {
+		        				dates.add(date);
+		        			}
+		        			//break;
 		        		}
 		        	}
 		        }
 		        
-		        System.out.println(additionalStudents.toString());
+		        //System.out.println(additionalStudents.toString());
+
 		        
 		        br.close(); 
 		        setChanged();
@@ -245,6 +256,30 @@ public class Repository extends Observable  {
 		   catch(NumberFormatException nfe) {
 			   nfe.printStackTrace();
 		   }
+	   }
+	   
+	   public boolean hasDate(LocalDate dateToCheck) {
+		   for(LocalDate date : dates) {
+			   if(date.toString().equals(dateToCheck.toString())) {
+				   return true;
+			   }
+		   }
+		   return false;
+	   }
+	   
+	   public List<Double> getDataSet(LocalDate date) {
+		   List<Double> xAxis = new ArrayList();
+		   
+		   for(Student student : roster) { 			   		
+			   if(student.getDateAttendance(date) >= 75) {
+				   xAxis.add(100.0);
+			   }
+		   	   else {
+		   		   double percentage = student.getDateAttendance(date) / 75.0 * 100; 
+		   		   xAxis.add(percentage);
+		   	   }
+		   }
+		   return xAxis;
 	   }
 }
 
