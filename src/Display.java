@@ -13,32 +13,62 @@ public class Display {
 	public void emptyRosterErrorHandler() {
 		JFrame frame = new JFrame();
 		JDialog dialog = new JDialog(frame, "Error");
-	    JLabel message = new JLabel("ERROR: Roster must be loaded first");
+	  JPanel panel = new JPanel();
+		JLabel message = new JLabel("ERROR: Roster must be loaded first");
 	        
-	    dialog.add(message);
+		panel.add(message);
+	    dialog.add(panel);
 	        
-	    dialog.setSize(300, 80);
+	    dialog.setSize(300, 70);
 	    dialog.setVisible(true);
 	}
 	
 	public void displayAttendanceResult(LinkedHashMap<String, Integer> additionalStudents, int studentsAdded) {
 		JFrame frame = new JFrame();
 		JDialog dialog = new JDialog(frame, "Attendance Results");
-	    JLabel loadedMessage = new JLabel("Data loaded for " + studentsAdded + " users in the roster.");
+
+	    JPanel panel = new JPanel();
+		JLabel loadedMessage = new JLabel("Data loaded for " + studentsAdded + " users in the roster.");
+	    JLabel additionalMessage = new JLabel(additionalStudents.size() + " additional attendee(s) was found:\n");
+			    
+	    //panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 	    
-	    dialog.add(loadedMessage);
-	    
+	    panel.setLayout(new FlowLayout());
+		panel.add(loadedMessage);
+		panel.add(additionalMessage);
+
+		String attendeeMessage = "";
+		
 	    if(!additionalStudents.isEmpty()) {
-	    	String additionalMessage = additionalStudents.size() + " additional attendee(s) was found:\n";
 	    	for(Map.Entry<String, Integer> e : additionalStudents.entrySet()) {
-	    		  additionalMessage += e.getKey() + ", connected for " + e.getValue() + " minute(s)\n";
-	    		  JLabel additionalLabel = new JLabel(additionalMessage);
-	    		  dialog.add(additionalLabel);
+	    		  attendeeMessage = e.getKey() + ", connected for " + e.getValue() + " minute(s)\n";
+	    		  JLabel additionalLabel = new JLabel(attendeeMessage);
+	  	    	  panel.add(additionalLabel);	    
 	    	}
 	    }
 	        
-	    dialog.setSize(300, 80);
+	    dialog.add(panel);
+	    //dialog.setSize(300);
+	    dialog.pack();
 	    dialog.setVisible(true);
+	    
+	    Repository.additionalStudents.clear();
+	    Repository.studentsAdded = 0;
+// 	    JLabel loadedMessage = new JLabel("Data loaded for " + studentsAdded + " users in the roster.");
+	    
+// 	    dialog.add(loadedMessage);
+	    
+// 	    if(!additionalStudents.isEmpty()) {
+// 	    	String additionalMessage = additionalStudents.size() + " additional attendee(s) was found:\n";
+// 	    	for(Map.Entry<String, Integer> e : additionalStudents.entrySet()) {
+// 	    		  additionalMessage += e.getKey() + ", connected for " + e.getValue() + " minute(s)\n";
+// 	    		  JLabel additionalLabel = new JLabel(additionalMessage);
+// 	    		  dialog.add(additionalLabel);
+// 	    	}
+// 	    }
+	        
+// 	    dialog.setSize(300, 80);
+// 	    dialog.setVisible(true);
 		
 	}
 	

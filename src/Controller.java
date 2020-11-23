@@ -46,6 +46,7 @@ public class Controller {
     public static void saveDate(int month, int day, int year, String filepath) {
     	LocalDate date = LocalDate.of(year,  month, day);
     	Main.repo.addStudentAttendance(date, filepath);
+
     	// Display JDialog with added info
     	Display dis = new Display();
     	dis.displayAttendanceResult(Repository.additionalStudents, Repository.studentsAdded);
@@ -57,5 +58,7 @@ public class Controller {
     	dis.emptyRosterErrorHandler();
     }
     
-    
+    public static void displayScatterPlot() {
+    	ScatterPlot.scatterPlotGUI();
+    } 
 }
