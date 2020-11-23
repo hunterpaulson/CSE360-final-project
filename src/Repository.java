@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ public class Repository extends Observable  {
 		headers.add("ASURITE");
 		additionalStudents = new LinkedHashMap();
 		dates = new ArrayList<LocalDate>();
+
 	}
 	
 	
@@ -242,6 +244,7 @@ public class Repository extends Observable  {
 		        }
 		        
 		        //System.out.println(additionalStudents.toString());
+
 		        
 		        br.close(); 
 		        setChanged();
