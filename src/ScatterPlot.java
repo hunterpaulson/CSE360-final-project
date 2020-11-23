@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -43,9 +44,15 @@ public class ScatterPlot extends JFrame {
 	}
 
 	private XYDataset createDataset() {
+		List<LocalDate> dates = new ArrayList<LocalDate>();
+		
+		for(int i = 6; i < Repository.headers.size(); i++) {
+			dates.add(LocalDate.parse(Repository.headers.get(i)));
+		}
+		
 	    XYSeriesCollection dataset = new XYSeriesCollection();
 		
-		for(LocalDate date : Repository.dates) { 
+		for(LocalDate date : dates) { 
 			List<Double> xAxis = Main.repo.getDataSet(date);
 			XYSeries classData = new XYSeries(date.toString());
 			
@@ -54,15 +61,12 @@ public class ScatterPlot extends JFrame {
 				int count = 1;
 				
 				for(int j = i + 1; j < xAxis.size(); j++) {
-					System.out.println(xAxis.get(i) + " and " + xAxis.get(j).intValue() + " are being compared.");
 					if(percentage == xAxis.get(j).intValue()) {
-						System.out.println("Removed " + xAxis.get(j));
 						count++;
 						xAxis.remove(j);
 						j--;
 					}
 				}
-				System.out.println(count + ", " + percentage);
 				classData.add(percentage, count); 
 			}
 			dataset.addSeries(classData); 

@@ -54,21 +54,6 @@ public class Display {
 	    
 	    Repository.additionalStudents.clear();
 	    Repository.studentsAdded = 0;
-// 	    JLabel loadedMessage = new JLabel("Data loaded for " + studentsAdded + " users in the roster.");
-	    
-// 	    dialog.add(loadedMessage);
-	    
-// 	    if(!additionalStudents.isEmpty()) {
-// 	    	String additionalMessage = additionalStudents.size() + " additional attendee(s) was found:\n";
-// 	    	for(Map.Entry<String, Integer> e : additionalStudents.entrySet()) {
-// 	    		  additionalMessage += e.getKey() + ", connected for " + e.getValue() + " minute(s)\n";
-// 	    		  JLabel additionalLabel = new JLabel(additionalMessage);
-// 	    		  dialog.add(additionalLabel);
-// 	    	}
-// 	    }
-	        
-// 	    dialog.setSize(300, 80);
-// 	    dialog.setVisible(true);
 		
 	}
 	
