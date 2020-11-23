@@ -39,8 +39,7 @@ public class Controller {
 	// Prompt user to select date of attendance
 	public static void displayDatePicker(String filepath) {
         DatePicker calendar = new DatePicker();
-        //calendar.datePickerGUI(filepath);
-        calendar.datePickerGUI();
+        calendar.datePickerGUI(filepath);
     }
     
 	// Save date and time from file into attendance data
