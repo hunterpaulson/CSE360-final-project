@@ -96,6 +96,19 @@ public class Main extends JFrame {
                 Controller.saveTable(inputFilepath);
             }
         });
+        
+        plotData.addActionListener(new ActionListener() {
+        	@Override
+            public void actionPerformed(ActionEvent e)
+            {
+        		if(Repository.roster != null) {		// Check if roster has been loaded
+        			Controller.displayScatterPlot();
+        		}
+        		else {
+        			Controller.displayEmptyRosterError();
+        		}
+            }
+        });
 
 	}
 
