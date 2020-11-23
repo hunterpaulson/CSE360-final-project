@@ -1,20 +1,36 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Set;
 import java.time.LocalDate; // import the LocalDate class
+
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileSystemView;
+
+import org.jdesktop.swingx.JXDatePicker;
+
+import java.awt.FlowLayout;
 import java.io.*;
+import java.text.SimpleDateFormat;
 
 @SuppressWarnings("deprecation")
 public class Repository extends Observable  {
 	
 	public static List<Student> roster;
 	public static List<String> headers;
+	public static int studentsAdded = 0;
+	public static LinkedHashMap<String, Integer> additionalStudents;
+	public static List<LocalDate> dates;
 	
 	public static final String delimiter = ",";
 	
@@ -26,6 +42,8 @@ public class Repository extends Observable  {
 		headers.add("Program");
 		headers.add("Level");
 		headers.add("ASURITE");
+		additionalStudents = new LinkedHashMap();
+		dates = new ArrayList<LocalDate>();
 	}
 	
 	
@@ -105,42 +123,42 @@ public class Repository extends Observable  {
 		   return stu;
 	   }
 	   
-	   public void save(String saveFilePath) {
+	   public boolean save(String saveFilePath) {
+           
+		   System.out.println(saveFilePath);
 		   
-		   //Save Dialog Code to be used somewhere else and resulting filepath to be passed into this function
-		   JFrame parentFrame = new JFrame();
-		   
-		   JFileChooser fileChooser = new JFileChooser();
-		   fileChooser.setDialogTitle("Save Roster");   
-		    
-		   int userSelection = fileChooser.showSaveDialog(parentFrame);
-		   File fileToSave = null;
-		   if (userSelection == JFileChooser.APPROVE_OPTION) {
-		       fileToSave = fileChooser.getSelectedFile();
-		       System.out.println("Save as file: " + fileToSave.getAbsolutePath());
-		   }
-		   
-		   try {
-			FileWriter csvWriter = new FileWriter(fileToSave.getAbsolutePath().toString());
-			
-			if(!headers.isEmpty())
-				csvWriter.append(String.join(",", headers));
-			
-			List<List<String>> tableData = getTableData();
-			
-			for(List<String> studentInfo : tableData) {
-				csvWriter.append("\n");
-				csvWriter.append(String.join(",", studentInfo));
-			}
-			
-			csvWriter.flush();
-			csvWriter.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		   
-		   
-	   }
+           try {
+            FileWriter csvWriter = new FileWriter(saveFilePath);
+            
+            if(!headers.isEmpty())
+                csvWriter.append(String.join(",", headers));
+            
+            List<List<String>> tableData = new ArrayList();
+            
+            String[][] arrTableData = getTableData();
+            
+            for(int i = 0; i < arrTableData.length; i++) {
+                List<String> tableRow = Arrays.asList(arrTableData[i]);
+                tableData.add(tableRow);
+            }
+            
+            
+            for(List<String> studentInfo : tableData) {
+                csvWriter.append("\n");
+                csvWriter.append(String.join(",", studentInfo));
+            }
+            
+            csvWriter.flush();
+            csvWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+           
+           return true;
+           
+           
+       }
 	   
        public String[] getHeaders() {
     	   
@@ -176,6 +194,89 @@ public class Repository extends Observable  {
 		   }
 		   
 		   return tableData;
+	   }
+	   
+	   // Add date and time to student attendance
+	   public void addStudentAttendance(LocalDate date, String filepath) {
+		   
+		   try {
+			   	File file = new File(filepath);
+		        FileReader fr = new FileReader(file);
+		        BufferedReader br = new BufferedReader(fr);
+		        
+		        String line = "";
+	        	String ASURITE = "";
+		        int time = 0;
+	        	
+		        if(!headers.contains(date.toString())) {
+		        	headers.add(date.toString());
+		        }
+		        
+		        while((line = br.readLine()) != null) {		// Read all lines of csv file
+		        	ASURITE = line.split(delimiter)[0];
+		        	
+		        	if(line.split(delimiter)[1].equals("")) {
+		        		time = 0;
+		        	}
+		        	else {
+		        		time = Integer.parseInt(line.split(delimiter)[1]);
+		        	}  
+		        	
+		        	additionalStudents.put(ASURITE, time);
+		        	
+		        	for(Student student : roster) {			// Find student by ASURITE
+		        		student.addAttendance(date, 0);
+		        		
+		        		if(student.getASURITE().equals(ASURITE)) {
+		        			student.addAttendance(date, time);
+		        			//System.out.println(student.getASURITE() + ": " + student.getAttendance());
+		        			additionalStudents.remove(ASURITE);
+		        			studentsAdded++;
+		        			
+		        			if(!this.hasDate(date)) {
+		        				dates.add(date);
+		        			}
+		        			//break;
+		        		}
+		        	}
+		        }
+		        
+		        //System.out.println(additionalStudents.toString());
+		        
+		        br.close(); 
+		        setChanged();
+		        notifyObservers();
+	       } 
+		   catch(IOException ioe) {
+	            ioe.printStackTrace();
+	       }
+		   catch(NumberFormatException nfe) {
+			   nfe.printStackTrace();
+		   }
+	   }
+	   
+	   public boolean hasDate(LocalDate dateToCheck) {
+		   for(LocalDate date : dates) {
+			   if(date.toString().equals(dateToCheck.toString())) {
+				   return true;
+			   }
+		   }
+		   return false;
+	   }
+	   
+	   public List<Double> getDataSet(LocalDate date) {
+		   List<Double> xAxis = new ArrayList();
+		   
+		   for(Student student : roster) { 			   		
+			   if(student.getDateAttendance(date) >= 75) {
+				   xAxis.add(100.0);
+			   }
+		   	   else {
+		   		   double percentage = student.getDateAttendance(date) / 75.0 * 100; 
+		   		   xAxis.add(percentage);
+		   	   }
+		   }
+		   return xAxis;
 	   }
 }
 

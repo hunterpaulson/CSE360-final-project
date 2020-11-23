@@ -60,7 +60,7 @@ public class Main extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-            	String inputFilepath = Controller.getFilePath();
+            	String inputFilepath = Controller.getOpenPath();
             	Controller.loadTable(inputFilepath);
 //            	Controller.loadTable("C:\\Users\\hwp11\\OneDrive\\Documents\\Classes\\CSE360\\studentTest.csv");
                 
@@ -70,6 +70,46 @@ public class Main extends JFrame {
 //                controller.process(s, i, d);
             }
         });
+        
+        addAttendance.addActionListener(new ActionListener() {
+        	@Override
+			public void actionPerformed(ActionEvent e) {
+        		if(Repository.roster != null) {		// Check if roster has been loaded
+		        	String inputFilepath = Controller.getOpenPath();
+		        	if(inputFilepath != null) {		// Check if file could be found
+		        		Controller.displayDatePicker(inputFilepath);
+		        	}
+        		}
+        		else {
+        			Controller.displayEmptyRosterError();		// Display error if roster has not been loaded yet
+        		}
+        	}
+        });
+        
+        saveRoster.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                String inputFilepath = Controller.getSavePath();
+                // TODO: need to handle if they dont choose a filepath
+                Controller.saveTable(inputFilepath);
+            }
+        });
+        
+        plotData.addActionListener(new ActionListener() {
+        	@Override
+            public void actionPerformed(ActionEvent e)
+            {
+        		if(Repository.roster != null) {		// Check if roster has been loaded
+        			Controller.displayScatterPlot();
+        		}
+        		else {
+        			Controller.displayEmptyRosterError();
+        		}
+            }
+        });
+
 	}
 
 	/**
