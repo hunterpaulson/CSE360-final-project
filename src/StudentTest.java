@@ -13,7 +13,7 @@ class StudentTest {
 
 	   Repository repo = new Repository();
 	   
-	   repo.load();
+//	   repo.load("C:\\Users\\User\\Desktop\\studenTest.csv");
 	   
 	   
 	   System.out.println(Repository.headers.toString());
