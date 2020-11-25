@@ -89,6 +89,8 @@ public class Repository extends Observable  {
 	
 	
 	public void load(String csvInputFile) {
+				
+		headers = headers.subList(0, 6);		//reset to default headers
 		
 		System.out.println(Arrays.toString(Repository.headers.toArray()));
 		this.read(csvInputFile);
@@ -231,20 +233,15 @@ public class Repository extends Observable  {
 		        		
 		        		if(student.getASURITE().equals(ASURITE)) {
 		        			student.addAttendance(date, time);
-		        			//System.out.println(student.getASURITE() + ": " + student.getAttendance());
 		        			additionalStudents.remove(ASURITE);
 		        			studentsAdded++;
 		        			
 		        			if(!this.hasDate(date)) {
 		        				dates.add(date);
 		        			}
-		        			//break;
 		        		}
 		        	}
 		        }
-		        
-		        //System.out.println(additionalStudents.toString());
-
 		        
 		        br.close(); 
 		        setChanged();
