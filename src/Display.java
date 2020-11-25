@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Display {
@@ -13,7 +12,7 @@ public class Display {
 	public void emptyRosterErrorHandler() {
 		JFrame frame = new JFrame();
 		JDialog dialog = new JDialog(frame, "Error");
-	  JPanel panel = new JPanel();
+		JPanel panel = new JPanel();
 		JLabel message = new JLabel("ERROR: Roster must be loaded first");
 	        
 		panel.add(message);
@@ -55,6 +54,25 @@ public class Display {
 	    Repository.additionalStudents.clear();
 	    Repository.studentsAdded = 0;
 		
+	}
+	
+	public void displayTeamInfo() {
+		JFrame frame = new JFrame();
+		JDialog dialog = new JDialog(frame, "Error");
+		JPanel panel = new JPanel();
+		
+		String teamInfo = 
+				"CSE360 (#0605)\n\n" +
+				"Members:\n" +
+				"Hunter Paulson, Yasser Mountasir Dbeis, Aidan Morgan,\n" +
+				"Junghwan Park, Darshan Vamathevan";
+		JLabel teamInfoLabel = new JLabel(teamInfo);
+	        
+		panel.add(teamInfoLabel);
+	    dialog.add(panel);
+	        
+	    dialog.setSize(400, 200);
+	    dialog.setVisible(true);
 	}
 	
 	
