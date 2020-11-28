@@ -1,21 +1,21 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 
 /**
  * Main Class
- * @author Hunter Paulson, ADD YOUR NAME HERE IF YOU CONTRUBUTE
+ * @author Hunter Paulson
  * CSE360-70605 Final Project
  * <p>
- * 
+ * Acts as the main view for the GUI. Displayed to the user upon startup.
+ * When buttons are pressed in the View, Main calls the respective controller functions.
  */
-@SuppressWarnings("serial")  // remove this before we submit, its just annoying
 public class Main extends JFrame {
 		
 	protected static Repository repo;
+	
 	/**
-	 * 
+	 * Constructor for Main class. Sets up the layout and adds JMenuBar and JPanel to it
 	 */
 	public Main()
 	{   
@@ -23,7 +23,6 @@ public class Main extends JFrame {
         setLayout(new FlowLayout()); // set this to whatever works best
         
         // Menu
-        // Use JMenu here for the 'File' and 'About' menu items
         JMenuItem loadRoster = new JMenuItem("Load a Roster");
         JMenuItem addAttendance = new JMenuItem("Add Attendance");
         JMenuItem saveRoster = new JMenuItem("Save");
@@ -46,14 +45,15 @@ public class Main extends JFrame {
         setJMenuBar(menuBar);
         
         
-        
+        // Roster Panel
         Panel panel = new Panel();
         add(panel);
         
-        
+        // Repository
         repo = new Repository();
         repo.addObserver(panel);
         
+       
         // Action listeners
         loadRoster.addActionListener(new ActionListener()
         {
@@ -61,13 +61,9 @@ public class Main extends JFrame {
             public void actionPerformed(ActionEvent e)
             {
             	String inputFilepath = Controller.getOpenPath();
-            	Controller.loadTable(inputFilepath);
-//            	Controller.loadTable("C:\\Users\\hwp11\\OneDrive\\Documents\\Classes\\CSE360\\studentTest.csv");
-                
-                // The controller validates the given input, and
-                // eventually calls some methods on the Model,
-                // possibly using the given input values
-//                controller.process(s, i, d);
+            	if(inputFilepath != null) {		// Check if file could be found
+            		Controller.loadTable(inputFilepath);
+	        	}
             }
         });
         
@@ -91,9 +87,15 @@ public class Main extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                String inputFilepath = Controller.getSavePath();
-                // TODO: need to handle if they dont choose a filepath
-                Controller.saveTable(inputFilepath);
+            	if(Repository.roster != null) {		// Check if roster has been loaded
+        			String inputFilepath = Controller.getSavePath();
+        			if(inputFilepath != null) {		// Check if file could be found
+        				Controller.saveTable(inputFilepath);
+        			}
+        		}
+        		else {
+        			Controller.displayEmptyRosterError();
+        		}
             }
         });
         
@@ -113,6 +115,7 @@ public class Main extends JFrame {
 	}
 
 	/**
+	 * Starts the program and sets up the GUI
 	 * @param args
 	 */
 	public static void main(String[] args) {
