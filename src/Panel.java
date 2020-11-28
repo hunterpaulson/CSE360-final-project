@@ -10,7 +10,7 @@ import java.util.Observer;
 
 /**
  * Panel Class
- * @author Hunter Paulson
+ * @author Hunter Paulson, Aidan Morgan
  * CSE360-70605 Final Project
  * <p>
  * This is the main Panel under the JMenu that displays the JTable of all the data

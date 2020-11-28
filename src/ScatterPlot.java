@@ -14,8 +14,11 @@ import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.*;
 
-/*
+/**
+ * CSVFileChooser Class
  * @author Junghwan (Kevin) Park
+ * CSE360-70605 Final Project
+ * <p>
  * This class creates and displays the scatter plot GUI for the plot data function.
  * Scatter plot shows number of students per percentage of the class time attended.
  */
@@ -97,7 +100,9 @@ public class ScatterPlot extends JFrame {
 	    return dataset;
 	}
 	
-	// Display scatter plot GUI
+	/**
+	 * Displays the scatter plot with all the data
+	 */
 	public static void scatterPlotGUI() {
 		SwingUtilities.invokeLater(() -> {
 		      ScatterPlot sp = new ScatterPlot("Plot Data");

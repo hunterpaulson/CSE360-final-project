@@ -10,14 +10,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.jdesktop.swingx.JXDatePicker;
 
-/*
+/**
+ * DatePicker Class
  * @author Junghwan (Kevin) Park
+ * CSE360-70605 Final Project
+ * <p>
  * This class creates the date picker GUI as a part of the add attendance function.
  */
-
 public class DatePicker {
 	
-	// Create and display GUI for date picker
+	/**
+	 * Create and display GUI for date picker
+	 * @param filepath path to csv file with attendance data
+	 */
 	public void datePickerGUI(String filepath) {
 		JFrame frame = new JFrame("Calendar");
         JPanel panel = new JPanel();

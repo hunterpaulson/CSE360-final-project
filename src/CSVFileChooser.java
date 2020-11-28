@@ -8,10 +8,11 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * CSV File Chooser Class
+ * CSVFileChooser Class
  * @author Aidan Morgan,
  * CSE360-70605 Final Project
- * The CSVFileChooser 
+ * <p>
+ * Displays JFileChooser dialogues based on whether the user is opening or saving a file.
  */
 public class CSVFileChooser extends JFileChooser {
 
@@ -19,9 +20,11 @@ public class CSVFileChooser extends JFileChooser {
 	private FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files","csv");
 	final Dimension prefered = new Dimension();
 	
+	/**
+	 * Constructor for CSVFileChooser
+	 */
 	public CSVFileChooser() {
 		chooser.setFileFilter(filter);
-		chooser.setApproveButtonText("Add Attendance");
 		chooser.setBackground(Color.WHITE);
 		chooser.setForeground(Color.white);
 		prefered.setSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2.25, Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2.25);
@@ -29,9 +32,12 @@ public class CSVFileChooser extends JFileChooser {
 		
 	}
 	
+	/**
+	 * Allows user to choose which file to open by displaying an open file dialogue
+	 * @return File chosen by user
+	 */
 	public File getOpenFile()
 	{
-		//int returnVal = chooser.showOpenDialog(getParent());
 		File file;
 		int returnVal = chooser.showOpenDialog(getParent());
 		file = chooser.getSelectedFile();
@@ -51,9 +57,12 @@ public class CSVFileChooser extends JFileChooser {
 		
 	}
 	
+	/**
+	 * Allows user to choose where/which file to save to by displaying a save file dialogue
+	 * @return File chosen by user
+	 */
 	public File getSaveFile()
 	{
-		//int returnVal = chooser.showOpenDialog(getParent());
 		File file;
 		int returnVal = chooser.showSaveDialog(getParent());
 		file = chooser.getSelectedFile();

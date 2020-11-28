@@ -7,8 +7,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Display Class
+ * @author Junghwan (Kevin) Park
+ * CSE360-70605 Final Project
+ * Displays the about tab and dialogue boxes to display status or errors 
+ */
 public class Display {
 
+	/**
+	 * Displays error dialogue when the user trys to perform an action on the roster when the roster hasnt been loaded
+	 */
 	public void emptyRosterErrorHandler() {
 		JFrame frame = new JFrame();
 		JDialog dialog = new JDialog(frame, "Error");
@@ -22,6 +31,12 @@ public class Display {
 	    dialog.setVisible(true);
 	}
 	
+	/**
+	 * Displays the result of adding the attendance data to the roster.
+	 * Tells how many students the data was loaded for, and if additional attendees were found
+	 * @param additionalStudents
+	 * @param studentsAdded
+	 */
 	public void displayAttendanceResult(LinkedHashMap<String, Integer> additionalStudents, int studentsAdded) {
 		JFrame frame = new JFrame();
 		JDialog dialog = new JDialog(frame, "Attendance Results");
@@ -56,6 +71,9 @@ public class Display {
 		
 	}
 	
+	/**
+	 * Displays the team info when the about tab is pressed
+	 */
 	public void displayTeamInfo() {
 		JFrame frame = new JFrame();
 		JDialog dialog = new JDialog(frame, "Error");
