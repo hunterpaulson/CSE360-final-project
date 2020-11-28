@@ -9,28 +9,33 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.jdesktop.swingx.JXDatePicker;
-//import javax.swing.JDatePicker;
+
+/*
+ * @author Junghwan (Kevin) Park
+ * This class creates the date picker GUI as a part of the add attendance function.
+ */
 
 public class DatePicker {
 	
+	// Create and display GUI for date picker
 	public void datePickerGUI(String filepath) {
 		JFrame frame = new JFrame("Calendar");
         JPanel panel = new JPanel();
         JButton button = new JButton("Confirm");
         JLabel label = new JLabel("Select date of attendance:");
         
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBounds(250, 250, 250, 100);
 
+        // Initialize new date picker from JXDatePicker
         JXDatePicker picker = new JXDatePicker();
         picker.setDate(Calendar.getInstance().getTime());
-        picker.setFormats(new SimpleDateFormat("MM/dd/yyyy"));
+        picker.setFormats(new SimpleDateFormat("MM/dd/yyyy"));		// Specify date format
 
+        // Add elements to frame
         panel.add(label);
         panel.add(picker);
         panel.add(button);
         frame.getContentPane().add(panel);
-
         frame.setVisible(true);
 
         // Handle button press
@@ -42,8 +47,9 @@ public class DatePicker {
 	        	int inputDay = selectedDate.getDate();
 	        	int inputYear = selectedDate.getYear() + 1900;
 				
+	        	// Call controller function to save date into student object
 				Controller.saveDate(inputMonth, inputDay, inputYear, filepath);
-				frame.dispose();
+				frame.dispose();		// Close date picker GUI
 			}
         });
 	}

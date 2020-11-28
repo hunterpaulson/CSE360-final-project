@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Display {
@@ -13,7 +12,7 @@ public class Display {
 	public void emptyRosterErrorHandler() {
 		JFrame frame = new JFrame();
 		JDialog dialog = new JDialog(frame, "Error");
-	  JPanel panel = new JPanel();
+		JPanel panel = new JPanel();
 		JLabel message = new JLabel("ERROR: Roster must be loaded first");
 	        
 		panel.add(message);
@@ -54,22 +53,26 @@ public class Display {
 	    
 	    Repository.additionalStudents.clear();
 	    Repository.studentsAdded = 0;
-// 	    JLabel loadedMessage = new JLabel("Data loaded for " + studentsAdded + " users in the roster.");
-	    
-// 	    dialog.add(loadedMessage);
-	    
-// 	    if(!additionalStudents.isEmpty()) {
-// 	    	String additionalMessage = additionalStudents.size() + " additional attendee(s) was found:\n";
-// 	    	for(Map.Entry<String, Integer> e : additionalStudents.entrySet()) {
-// 	    		  additionalMessage += e.getKey() + ", connected for " + e.getValue() + " minute(s)\n";
-// 	    		  JLabel additionalLabel = new JLabel(additionalMessage);
-// 	    		  dialog.add(additionalLabel);
-// 	    	}
-// 	    }
-	        
-// 	    dialog.setSize(300, 80);
-// 	    dialog.setVisible(true);
 		
+	}
+	
+	public void displayTeamInfo() {
+		JFrame frame = new JFrame();
+		JDialog dialog = new JDialog(frame, "Error");
+		JPanel panel = new JPanel();
+		
+		String teamInfo = 
+				"CSE360 (#0605)\n\n" +
+				"Members:\n" +
+				"Hunter Paulson, Yasser Mountasir Dbeis, Aidan Morgan,\n" +
+				"Junghwan Park, Darshan Vamathevan";
+		JLabel teamInfoLabel = new JLabel(teamInfo);
+	        
+		panel.add(teamInfoLabel);
+	    dialog.add(panel);
+	        
+	    dialog.setSize(400, 200);
+	    dialog.setVisible(true);
 	}
 	
 	

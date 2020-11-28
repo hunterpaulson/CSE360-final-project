@@ -1,51 +1,79 @@
 import java.awt.Color;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
-import org.jfree.chart.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.*;
+
+/*
+ * @author Junghwan (Kevin) Park
+ * This class creates and displays the scatter plot GUI for the plot data function.
+ * Scatter plot shows number of students per percentage of the class time attended.
+ */
 
 public class ScatterPlot extends JFrame {
 	
+	/*
+	 * Constructor. Creates scatter plot GUI
+	 * @param title String that diplays as the title of the plot
+	 */
 	public ScatterPlot(String title) {
 	    super(title);
 	    
 	     XYDataset dataset = createDataset();	// Get data
 	    
+	    // Create scatter plot from JFreeChart
 	    JFreeChart chart = ChartFactory.createScatterPlot(
 	        "Attendance", "Percent of Attendance", "Count", dataset);
 
-	    //Changes background color
+	    // Change background color of plot
 	    XYPlot plot = (XYPlot)chart.getPlot();
 	    plot.setBackgroundPaint(new Color(255,228,196));
 	    
+	    // Set x-axis range
 	    NumberAxis domain = (NumberAxis)plot.getDomainAxis();
         domain.setRange(-5, 105);
         domain.setTickUnit(new NumberTickUnit(10));
         domain.setVerticalTickLabels(true);
         
+        // Set y-axis range
         NumberAxis range = (NumberAxis)plot.getRangeAxis();
         range.setRange(0, Repository.roster.size() + 0.5);
         range.setTickUnit(new NumberTickUnit(1));
         range.setVerticalTickLabels(true);
 	    
-	    // Create Panel
+	    // Create panel to display plot
 	    ChartPanel panel = new ChartPanel(chart);
 	    setContentPane(panel);
 	}
 
+	/*
+	 *  Create data from repository attendance
+	 *  @return dataset Object containing data set
+	 */
 	private XYDataset createDataset() {
+		// List to hold all dates in the roster
+		List<LocalDate> dates = new ArrayList<LocalDate>();
+		
+		// Read dates from header list 
+		for(int i = 6; i < Repository.headers.size(); i++) {
+			dates.add(LocalDate.parse(Repository.headers.get(i)));
+		}
+		
+		// Create data set
 	    XYSeriesCollection dataset = new XYSeriesCollection();
 		
-		for(LocalDate date : Repository.dates) { 
+	    // For each date, find the data points
+		for(LocalDate date : dates) { 
 			List<Double> xAxis = Main.repo.getDataSet(date);
 			XYSeries classData = new XYSeries(date.toString());
 			
@@ -53,24 +81,23 @@ public class ScatterPlot extends JFrame {
 				int percentage = xAxis.get(i).intValue();
 				int count = 1;
 				
+				// Count the number of duplicates
 				for(int j = i + 1; j < xAxis.size(); j++) {
-					System.out.println(xAxis.get(i) + " and " + xAxis.get(j).intValue() + " are being compared.");
 					if(percentage == xAxis.get(j).intValue()) {
-						System.out.println("Removed " + xAxis.get(j));
 						count++;
 						xAxis.remove(j);
 						j--;
 					}
 				}
-				System.out.println(count + ", " + percentage);
 				classData.add(percentage, count); 
 			}
-			dataset.addSeries(classData); 
+			dataset.addSeries(classData); 	// Add data set for each date
 		}
 
 	    return dataset;
 	}
 	
+	// Display scatter plot GUI
 	public static void scatterPlotGUI() {
 		SwingUtilities.invokeLater(() -> {
 		      ScatterPlot sp = new ScatterPlot("Plot Data");

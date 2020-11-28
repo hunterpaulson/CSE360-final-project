@@ -58,9 +58,27 @@ public class CSVFileChooser extends JFileChooser {
 		int returnVal = chooser.showSaveDialog(getParent());
 		file = chooser.getSelectedFile();
 		
+		
 		if(returnVal != JFileChooser.APPROVE_OPTION) {
 			file = null;
 		}
+		
+		//check for extension tag in save file
+		if(file.getName().indexOf('.') == -1)
+		{
+			//no extension
+			file = new File(file.toString() + ".csv");
+		}
+		else if(!file.getName().substring(file.getName().indexOf('.')).equalsIgnoreCase(".csv"))
+		{
+			//file extension is not a .csv file but has an extension
+			file = null;
+		}
+		else
+		{
+			//file extension is good
+		}
+		
 		
 		return file;
 		

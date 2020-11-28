@@ -31,7 +31,6 @@ public class Repository extends Observable  {
 	public static List<String> headers;
 	public static int studentsAdded = 0;
 	public static LinkedHashMap<String, Integer> additionalStudents;
-	public static List<LocalDate> dates;
 	
 	public static final String delimiter = ",";
 	public static final int baseHeaders = 6;
@@ -45,7 +44,6 @@ public class Repository extends Observable  {
 		headers.add("Level");
 		headers.add("ASURITE");
 		additionalStudents = new LinkedHashMap();
-		dates = new ArrayList<LocalDate>();
 
 	}
 	
@@ -234,10 +232,7 @@ public class Repository extends Observable  {
 		        			student.addAttendance(date, time);
 		        			additionalStudents.remove(ASURITE);
 		        			studentsAdded++;
-		        			
-		        			if(!this.hasDate(date)) {
-		        				dates.add(date);
-		        			}
+		        			break;
 		        		}
 		        	}
 		        }
@@ -252,18 +247,6 @@ public class Repository extends Observable  {
 		   catch(NumberFormatException nfe) {
 			   nfe.printStackTrace();
 		   }
-	   }
-	   
-	   public boolean hasDate(LocalDate dateToCheck) {
-		   for(LocalDate date : dates) {
-			   System.out.println(dateToCheck.toString());
-
-			   System.out.println("YOO: " + date.toString());
-			   if((date).equals(dateToCheck)) {
-				   return true;
-			   }
-		   }
-		   return false;
 	   }
 	   
 	   public List<Double> getDataSet(LocalDate date) {

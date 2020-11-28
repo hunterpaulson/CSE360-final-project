@@ -10,22 +10,22 @@ import java.util.Observer;
 
 /**
  * Panel Class
- * @author 
+ * @author Hunter Paulson
  * CSE360-70605 Final Project
  * <p>
  * This is the main Panel under the JMenu that displays the JTable of all the data
  */
-@SuppressWarnings("serial")
 public class Panel extends JPanel implements Observer {
     
 	protected JTable table;
 
+	/**s
+	 * Constructor for Panel class.
+	 * Adds a scroll pane with a JTable inside of it to the JPanel
+	 */
     public Panel() {
-//    	String[] columnNames = {"Name", "Color"};
-//        Object[][] data = { {"John", "Blue"}, {"Oliver", "Green"}, {"Paul", "Red"} };
     	this.table = new JTable();
     	add(new JScrollPane(table));
-//    	this.table.setModel(new DefaultTableModel(data, columnNames));
     }
     
     
@@ -36,14 +36,12 @@ public class Panel extends JPanel implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-    	System.out.println("Was Notified");
     	String[][] data = ((Repository)o).getTableData();
     	String[] headers = ((Repository)o).getHeaders();
+    	System.out.println(Arrays.toString(Repository.headers.toArray()));
     	for(String[] arr : data) {
     		System.out.println(Arrays.toString(arr));
     	}
-    	System.out.println(Arrays.toString(Repository.headers.toArray()));
     	this.table.setModel(new DefaultTableModel(data, headers));
-    	System.out.println("Set Model");
     }
 }
