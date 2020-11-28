@@ -1,49 +1,74 @@
-import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
 import java.time.LocalDate;
 
 /**
  * Controller Class
- * @author 
+ * @author Hunter Paulson
  * CSE360-70605 Final Project
  * <p>
  * The controller manages user interaction and passes these interactions to the view (main/panel) and the model(repository)
  */
 public class Controller {
-
+	
+	/**
+	 * Calls getOpenFile in CSV file chooser
+	 * @return String path to the csv file the user wants to open
+	 */
 	public static String getOpenPath() {
-		return new CSVFileChooser().getOpenFile().getAbsolutePath().toString();
+		try {
+			return new CSVFileChooser().getOpenFile().getAbsolutePath().toString();
+		} catch(java.lang.NullPointerException e) {
+			return null;
+		}
 	}
 	
+	/**
+	 * Calls getSaveFile in CSV file chooser
+	 * @return String path where the user wants to save the csv file
+	 */
 	public static String getSavePath() {
-		return new CSVFileChooser().getSaveFile().getAbsolutePath().toString();
+		try {
+			return new CSVFileChooser().getSaveFile().getAbsolutePath().toString();
+		} catch(java.lang.NullPointerException e) {
+			return null;
+		}
 	}
 	
+	/**
+	 * Calls the load function in Repository
+	 * @param filepath path to the csv file being loaded into the roster
+	 */
 	public static void loadTable(String filepath) {
         Main.repo.load(filepath);
 	}
 	
-	// in controller
+	/**
+	 * Calls the save function iin Repository
+	 * @param filepath path to the csv file that the current roster is being saved to
+	 */
     public static void saveTable(String filepath) {
-        if (Main.repo.save(filepath)) {
-             // show success in display class
-        } else {
-            // give error message in display class
-        }
+        Main.repo.save(filepath);
     }
 	
-	// Prompt user to select date of attendance
+    /**
+     * Calls the datePickerGUI from DatePicker class
+     * @param filepath path to the csv file with attendance data for the date being selected
+     */
 	public static void displayDatePicker(String filepath) {
+		// Prompt user to select date of attendance
         DatePicker calendar = new DatePicker();
         calendar.datePickerGUI(filepath);
     }
     
-	// Save date and time from file into attendance data
+	/**
+	 * Calls the addStudentAttendance function from Repository
+	 * Calls Display to display the status/result of the added attendance
+	 * @param month 
+	 * @param day 
+	 * @param year
+	 * @param filepath path to the csv file with attendance data for the date selected
+	 */
     public static void saveDate(int month, int day, int year, String filepath) {
+    	// Save date and time from file into attendance data
     	LocalDate date = LocalDate.of(year,  month, day);
     	Main.repo.addStudentAttendance(date, filepath);
 
@@ -52,12 +77,18 @@ public class Controller {
     	dis.displayAttendanceResult(Repository.additionalStudents, Repository.studentsAdded);
     }
     
-    // Display error for when the roster has not been loaded
+    /**
+     * Calls the Display to display an error when the roster has not been loaded before save, add attendance, and plot data are called
+     */
     public static void displayEmptyRosterError() {
+    	// Display error for when the roster has not been loaded
     	Display dis = new Display();
     	dis.emptyRosterErrorHandler();
     }
     
+    /**
+     * Displays the scatter plot GUI
+     */
     public static void displayScatterPlot() {
     	ScatterPlot.scatterPlotGUI();
     } 
