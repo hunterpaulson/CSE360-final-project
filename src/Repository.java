@@ -129,9 +129,7 @@ public class Repository extends Observable  {
 	   }
 	   
 	   public boolean save(String saveFilePath) {
-           
-		   System.out.println(saveFilePath);
-		   
+           		   
            try {
             FileWriter csvWriter = new FileWriter(saveFilePath);
             
@@ -258,7 +256,10 @@ public class Repository extends Observable  {
 	   
 	   public boolean hasDate(LocalDate dateToCheck) {
 		   for(LocalDate date : dates) {
-			   if(date.toString().equals(dateToCheck.toString())) {
+			   System.out.println(dateToCheck.toString());
+
+			   System.out.println("YOO: " + date.toString());
+			   if((date).equals(dateToCheck)) {
 				   return true;
 			   }
 		   }
