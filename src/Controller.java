@@ -2,7 +2,7 @@ import java.time.LocalDate;
 
 /**
  * Controller Class
- * @author Hunter Paulson
+ * @author Hunter Paulson, Junghwan (Kevin) Park, Aidan Morgan
  * CSE360-70605 Final Project
  * <p>
  * The controller manages user interaction and passes these interactions to the view (main/panel) and the model(repository)
@@ -92,4 +92,12 @@ public class Controller {
     public static void displayScatterPlot() {
     	ScatterPlot.scatterPlotGUI();
     } 
+    
+    /**
+     * Displays the About dialogue box
+     */
+    public static void displayAboutTab() {
+        Display dis = new Display();
+        dis.displayTeamInfo();
+    }
 }
