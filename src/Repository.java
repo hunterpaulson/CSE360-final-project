@@ -33,6 +33,7 @@ public class Repository extends Observable  {
 	public static LinkedHashMap<String, Integer> additionalStudents;
 	
 	public static final String delimiter = ",";
+	public static final int baseHeaders = 6;
 	
 	public Repository() {
 		headers = new ArrayList();
@@ -87,6 +88,8 @@ public class Repository extends Observable  {
 	
 	
 	public void load(String csvInputFile) {
+				
+		headers = headers.subList(0, baseHeaders);		//reset to default headers
 		
 		System.out.println(Arrays.toString(Repository.headers.toArray()));
 		this.read(csvInputFile);
@@ -116,7 +119,7 @@ public class Repository extends Observable  {
 		   String ASURITE = attributes[5];
 		   
 		   Student stu = new Student(ID, firstName, lastName, program, level, ASURITE);
-		   for(int i = 6; i < attributes.length; i++) {
+		   for(int i = baseHeaders; i < attributes.length; i++) {
 			   stu.addAttendance(LocalDate.parse(headers.get(i)), Integer.parseInt(attributes[i]));
 		   }
 		   
@@ -124,9 +127,7 @@ public class Repository extends Observable  {
 	   }
 	   
 	   public boolean save(String saveFilePath) {
-           
-		   System.out.println(saveFilePath);
-		   
+           		   
            try {
             FileWriter csvWriter = new FileWriter(saveFilePath);
             
@@ -184,10 +185,10 @@ public class Repository extends Observable  {
 			   stuAttributes[4] = roster.get(i).getLevel();
 			   stuAttributes[5] = roster.get(i).getASURITE();
 			   
-			   int j = 6;
+			   int studentIndex = baseHeaders;
 			   for(Map.Entry<LocalDate, Integer> e : roster.get(i).getAttendance().entrySet()) {
-				   stuAttributes[j] = Integer.toString(e.getValue());
-				   j++;
+				   stuAttributes[studentIndex] = Integer.toString(e.getValue());
+				   studentIndex++;
 			   }
 			   
 			   tableData[i] = stuAttributes;
@@ -229,16 +230,12 @@ public class Repository extends Observable  {
 		        		
 		        		if(student.getASURITE().equals(ASURITE)) {
 		        			student.addAttendance(date, time);
-		        			//System.out.println(student.getASURITE() + ": " + student.getAttendance());
 		        			additionalStudents.remove(ASURITE);
 		        			studentsAdded++;
 		        			break;
 		        		}
 		        	}
 		        }
-		        
-		        //System.out.println(additionalStudents.toString());
-
 		        
 		        br.close(); 
 		        setChanged();
