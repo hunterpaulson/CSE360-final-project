@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 /**
  * Main Class
- * @author Hunter Paulson
+ * @author Hunter Paulson, Aidan Morgan, Junghwan (Kevin) Park, Yasser Dbeis, Darshan Vamathevan
  * CSE360-70605 Final Project
  * <p>
  * Acts as the main view for the GUI. Displayed to the user upon startup.
@@ -36,7 +36,7 @@ public class Main extends JFrame {
         file.add(plotData);
         
         // add the menu's to the menu bar
-        JMenu about = new JMenu("About");
+        JMenuItem about = new JMenuItem("About");
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(file);
         menuBar.add(about);
@@ -109,6 +109,15 @@ public class Main extends JFrame {
         		else {
         			Controller.displayEmptyRosterError();
         		}
+            }
+        });
+        
+        about.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                Controller.displayAboutTab();
             }
         });
 
