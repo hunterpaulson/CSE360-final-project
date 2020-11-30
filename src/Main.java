@@ -20,8 +20,15 @@ public class Main extends JFrame {
 	public Main()
 	{   
         // Layout 
-        setLayout(new FlowLayout()); // set this to whatever works best
+        setLayout(new BorderLayout()); // set this to whatever works best
         
+		Dimension preferred = new Dimension();
+		preferred.setSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2, Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2);
+		setPreferredSize(preferred);
+		
+		//JScrollPane
+		//final JFrame scrollPane
+		
         // Menu
         JMenuItem loadRoster = new JMenuItem("Load a Roster");
         JMenuItem addAttendance = new JMenuItem("Add Attendance");
@@ -44,14 +51,17 @@ public class Main extends JFrame {
         add(menuBar);
         setJMenuBar(menuBar);
         
+        setTitle("CSE360 Final Project");
         
         // Roster Panel
         Panel panel = new Panel();
-        add(panel);
+        add(panel, BorderLayout.CENTER);
         
         // Repository
         repo = new Repository();
         repo.addObserver(panel);
+        
+        
         
        
         // Action listeners
@@ -130,7 +140,7 @@ public class Main extends JFrame {
 	public static void main(String[] args) {
         Main main = new Main();
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        main.setSize(500, 500);
+        main.setSize(main.getPreferredSize());
         main.setVisible(true);
 
 	}

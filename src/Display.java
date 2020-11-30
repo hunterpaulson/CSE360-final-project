@@ -1,4 +1,6 @@
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -6,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  * Display Class
@@ -45,15 +48,21 @@ public class Display {
             LinkedHashMap<String, Integer> additionalStudents, int studentsAdded) {
         JFrame frame = new JFrame();
         JDialog dialog = new JDialog(frame, "Attendance Results");
-
+        
+        String loadedMessageText = "Data loaded for " + studentsAdded + " users in the roster.";
+        
+        String additionalMessageText =  "<html>" + additionalStudents.size()  + " additional attendee(s) was found:<br>";
+        
         JPanel panel = new JPanel();
         JLabel loadedMessage =
-                new JLabel("Data loaded for " + studentsAdded + " users in the roster.");
+                new JLabel(loadedMessageText);
         JLabel additionalMessage =
-                new JLabel(additionalStudents.size() + " additional attendee(s) was found:\n");
+                new JLabel(additionalMessageText);
 
         // panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        
+        
         panel.setLayout(new FlowLayout());
         panel.add(loadedMessage);
         panel.add(additionalMessage);
@@ -62,17 +71,26 @@ public class Display {
 
         if (!additionalStudents.isEmpty()) {
             for (Map.Entry<String, Integer> e : additionalStudents.entrySet()) {
-                attendeeMessage = e.getKey() + ", connected for " + e.getValue() + " minute(s)\n";
+                attendeeMessage = "<html>" + e.getKey() + ", connected for " + e.getValue() + " minute(s)" + "<br></br>";
                 JLabel additionalLabel = new JLabel(attendeeMessage);
                 panel.add(additionalLabel);
             }
         }
 
-        dialog.add(panel);
-        // dialog.setSize(300);
-        dialog.pack();
+        
+        
+        
+        //JScrollPane scrollPane = new JScrollPane(panel);
+        dialog.add(new JScrollPane(panel));
+        //scrollPane.setSize(400, 600);
+        
+        //scrollPane.setVisible(true);
+        
+        
+        dialog.setSize(600, 400);
+        //dialog.pack();
         dialog.setVisible(true);
-
+        
         Repository.additionalStudents.clear();
         Repository.studentsAdded = 0;
     }
@@ -82,20 +100,24 @@ public class Display {
      */
     public void displayTeamInfo() {
         JFrame frame = new JFrame();
-        JDialog dialog = new JDialog(frame, "Error");
+        JDialog dialog = new JDialog(frame, "About");
         JPanel panel = new JPanel();
-
-        String teamInfo =
-                "CSE360 (#0605)\n\n"
-                        + "Members:\n"
-                        + "Hunter Paulson, Yasser Mountasir Dbeis, Aidan Morgan,\n"
-                        + "Junghwan Park, Darshan Vamathevan";
+		
+        
+        String teamInfo = "<html> <style>html {text-align: center} html {word-wrap: break-word} </style>" +
+                "<h1>CSE360 (#0605)<br></h1>"
+                        + "<h2>Members:<br></h2>"
+                        + "<h3>Hunter Paulson, Yasser Mountasir Dbeis, Aidan Morgan,\n"
+                        + "Junghwan Park, Darshan Vamathevan</h3>"
+                        + "</html>";
         JLabel teamInfoLabel = new JLabel(teamInfo);
 
         panel.add(teamInfoLabel);
         dialog.add(panel);
-
-        dialog.setSize(400, 200);
+        
+        
+        
+        dialog.setSize(900, 250);
         dialog.setVisible(true);
     }
 }

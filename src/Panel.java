@@ -22,8 +22,23 @@ public class Panel extends JPanel implements Observer {
 	 * Adds a scroll pane with a JTable inside of it to the JPanel
 	 */
     public Panel() {
+    	
+    	setLayout(new BorderLayout());
+    	
+    	Dimension preferred = new Dimension();
+		preferred.setSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 1.5, Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 1.5);
+		setPreferredSize(preferred);
+		
+		Dimension screen = new Dimension();
+		screen.setSize(Toolkit.getDefaultToolkit().getScreenSize().getWidth(), Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+    	setSize(screen);
+		
+		
     	this.table = new JTable();
-    	add(new JScrollPane(table));
+    	JScrollPane scrollPane = new JScrollPane(table);
+    	scrollPane.setSize(screen);
+    	add(scrollPane);
+    	
     }
     
     
@@ -36,10 +51,12 @@ public class Panel extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
     	String[][] data = ((Repository)o).getTableData();
     	String[] headers = ((Repository)o).getHeaders();
-    	System.out.println(Arrays.toString(Repository.headers.toArray()));
+    	//System.out.println(Arrays.toString(Repository.headers.toArray()));
+    	//System.out.print(headers);
     	for(String[] arr : data) {
     		System.out.println(Arrays.toString(arr));
     	}
     	this.table.setModel(new DefaultTableModel(data, headers));
+    	table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     }
 }
